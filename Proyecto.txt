@@ -1,0 +1,77 @@
+Prueba Técnica - Candidatos de Programación 2025 V2
+
+
+Objetivo
+
+El propósito de esta prueba es evaluar tu capacidad para arquitecturar una solución robusta más allá de la simple implementación funcional. Buscamos medir tu criterio en:
+Manejo de seguridad y restricciones modernas: Solución de CORS y gestión de secretos (sin exponerlos al cliente).
+Abstracción de Lógica: Capacidad para crear funciones reutilizables (DRY) que atiendan múltiples flujos de UI.
+Data Hygiene: Limpieza y normalización de datos "sucios" antes de procesarlos.
+Resiliencia: Manejo de errores controlados y feedback claro al usuario.
+
+Zoho API
+Scope necesario: ZohoCRM.modules.ALL o ZohoCRM.modules.contacts.CREATE
+Account Server: https://accounts.zoho.com
+API Base URL: https://www.zohoapis.com/crm/v8
+Reglas y Restricciones
+
+Git: Compartir el repositorio público (GitHub) con las cuentas: jchonglogoscorp y Duboox.
+Seguridad: El Client Secret NO debe estar expuesto en el código visible del lado del cliente (navegador). Se espera que se maneje a nivel de arquitectura.
+CORS: Está prohibido el uso de extensiones de navegador. Debes solucionar la comunicación API mediante arquitectura (Proxy, API Routes, etc.).
+Instrucciones Paso a Paso
+
+1. Creación del Repositorio
+
+Inicia un repositorio público en GitHub.
+
+2. Creación y Configuración del Proyecto
+
+Inicializa el proyecto en React (Vite recomendado).
+Solución CORS: Configura tu entorno (Proxy, Server Middleware, etc.) para poder realizar peticiones a Zoho sin depender de extensiones de navegador.
+3. Obtención de Credenciales (Investigación)
+
+Se te han proporcionado las credenciales OAuth2.
+Tarea: Investiga el flujo de autenticación de Zoho y utiliza Postman (o similar) para generar un Access Token válido usando el Refresh Token provisto.
+Nota: No es estrictamente necesario automatizar el refrescamiento del access token en el código para esta prueba; puedes generar el token manualmente y colocarlo en una variable de entorno para usarlo durante la sesión.
+
+4. Consumo y Transformación de Datos
+
+Consume el endpoint público: GET https://jsonplaceholder.typicode.com/users Antes de usar los datos en la UI, debes aplicar una capa de transformación:
+Normalización de Teléfono: El dato origen viene sucio (ej: 1-770-736-8031 x56442). Elimina guiones, puntos, paréntesis y extensiones. Deja solo dígitos.
+Normalización Web: Si el website no tiene protocolo, anteponer https://.
+Regla de Negocio (Empresas):
+Válido: Si company.name contiene "Group", "Inc." o "LLC".
+Inválido: Cualquier otro caso. (Márcalos en tu estructura de datos para usarlos en el paso siguiente).
+
+5. Renderizado y Flujo de Edición (Individual)
+
+Renderiza una tabla mostrando los siguientes campos obligatorios: Name, Email, Phone, Company Name.
+Estado Visual: Los usuarios marcados como "Inválidos" en el paso anterior deben verse visualmente deshabilitados (ej. en gris).
+Edición: Agrega un botón "Editar" en cada fila.
+Al hacer clic, debe abrir un Formulario (puede ser un modal, una sección lateral o debajo de la tabla) con los datos cargados.
+El usuario debe poder modificar los datos.
+Acción: El formulario debe tener un botón "Guardar y Enviar a CRM".
+Lógica: Al enviar, debe crear el contacto en Zoho CRM.
+
+6. Flujo Masivo y Lógica Reutilizable
+
+Implementa la capacidad de enviar múltiples registros a la vez.
+Agrega Checkboxes a la tabla (solo seleccionables para usuarios "Válidos").
+Agrega un botón global "Sincronizar Seleccionados".
+Requisito Técnico (Abstracción): Debes implementar una única función/servicio centralizado que maneje la lógica de envío a Zoho. Esta función debe ser reutilizada tanto por el Formulario de Edición (Paso 5) como por el Botón Masivo (Paso 6).
+7. Resiliencia y Simulación de Error
+
+Dentro de tu función centralizada de envío, implementa la siguiente lógica de control:
+Simulación de error: Si el username del usuario comienza con la letra "C" (ej: Clementine), tu código debe simular intencionalmente un error (fingir que la API falló) y NO guardar ese registro.
+Resiliencia: Si en un envío masivo falla 1 usuario (sea por error real o por la simulación de error) el proceso no debe detenerse. Los demás registros deben guardarse correctamente.
+Feedback: Al finalizar, muestra una Alerta o Toast con el resultado real.
+Ejemplo: "Proceso finalizado: 3 guardados, 1 fallido".
+Entregables
+
+Código Fuente: Enlace a un repositorio público (GitHub).
+El entregable debe llegar a la rama principal (main, master) a partir de un pull request.
+Colección de Postman: La colección o el cURL que usaste para generar el Access Token.
+README.md: Explicando brevemente:
+Instrucciones para correr el proyecto.
+Cómo solucionaste el problema de CORS.
+Dónde se encuentra la lógica reutilizable en tu estructura de carpetas.

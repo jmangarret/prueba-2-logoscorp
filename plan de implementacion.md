@@ -146,7 +146,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 **Criterio de salida:** datos transformados de forma consistente antes de llegar a presentación; registros inválidos identificables y sin selección. Aprobación para Fase 4.
 
-**Estado:** completada y aceptada por el usuario en `fase-3-ingesta-normalizacion`; typecheck y build pasan. Smoke check HTTP de `/api/users` quedó pendiente porque el puerto local `8787` estaba ocupado por un proceso existente inaccesible desde el sandbox. La Fase 4 requiere aprobación explícita.
+**Estado:** completada y aceptada por el usuario en `fase-3-ingesta-normalizacion`; typecheck y build pasan. El smoke check de `/api/users` quedó pendiente durante Fase 3 por ocupación del puerto, y se verificó después mediante la UI local: el servidor respondió y cargó 10 usuarios en Fase 6.
 
 ### Fase 4 — Tabla y edición individual
 
@@ -205,15 +205,15 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 **Tareas**
 
-- [ ] Completar README con instalación/ejecución, configuración segura, solución CORS y ubicación de la lógica reutilizable.
-- [ ] Completar colección Postman o cURL para generar access token usando placeholders, sin secretos ni tokens reales.
-- [ ] Revisar el diff y los criterios de aceptación de todas las fases; registrar verificaciones ejecutadas y limitaciones.
+- [x] Completar README con instalación/ejecución, configuración segura, solución CORS y ubicación de la lógica reutilizable.
+- [x] Revisar la colección Postman para generar access token con placeholders, sin secretos ni tokens reales.
+- [x] Revisar el diff y los criterios de aceptación de todas las fases; registrar verificaciones ejecutadas y limitaciones.
 - [ ] Preparar Pull Request desde rama de trabajo hacia la rama principal acordada; confirmar repositorio público y compartirlo con `jchonglogoscorp` y `Duboox` solo con autorización específica.
 - [ ] No hacer merge ni publicar sin aprobación explícita final.
 
 **Criterio de salida:** entregables documentados, PR revisable y aceptación expresa; integración a principal y compartición completadas solo con autorización correspondiente.
 
-**Estado:** pendiente de Fase 6.
+**Estado:** aprobada para implementación por el usuario el 2026-10-19; documentación, revisión y verificaciones completadas en `fase-7-documentacion-entrega`, basada en `origin/main` (`e194aa8`). La UI y el servidor se revisaron sin registrar fallos en el flujo; `npm run typecheck`, `npm run build` y la validación JSON de la colección Postman pasan. No se realizó prueba que cree contactos en Zoho. Pendiente abrir el PR y la aceptación final; no se hizo merge ni se cambió acceso de colaboradores.
 
 ## Registro de pendientes y decisiones
 
@@ -233,8 +233,8 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 | Fase 0 | Preparación y aclaraciones | Completada | 2026-10-19 | Usuario confirmó repositorio configurado, convención de ramas, credenciales disponibles, datacenter/URLs, React/Vite/TypeScript estricto, uso local y aprobación por un desarrollador. `main` fue publicada con documentación y la plantilla de entorno sin secretos. |
 | Fase 1 | Diseño técnico | Completada | 2026-10-19 | Diseño, DTO, mapping, seguridad, variables de entorno de ejemplo y estados documentados y publicados. No se generó código de producto. La Fase 2 requiere aprobación explícita. |
 | Fase 2 | Esqueleto seguro | Aceptada por el usuario | 2026-10-19 | Rama `fase-2-esqueleto-seguro`; usuario confirma Node 22 con nvm y funcionamiento de endpoints. Typecheck/build completados. Commit local `e4f9119`; `POST /api/contacts/sync` sigue en 501 hasta Fase 5. |
-| Fase 3 | Ingesta y transformación | Aceptada por el usuario | 2026-10-19 | Aprobación de inicio: “agrega commits para iniciar la fase 3”; aceptación: “Fase 3 aprobada y aceptada”. Rama `fase-3-ingesta-normalizacion`, basada en `origin/main` e incluye el commit local de Fase 2. Typecheck/build pasan; smoke HTTP de `/api/users` pendiente por ocupación del puerto 8787. Fase 4 aún requiere aprobación explícita. |
+| Fase 3 | Ingesta y transformación | Aceptada por el usuario | 2026-10-19 | Aprobación de inicio: “agrega commits para iniciar la fase 3”; aceptación: “Fase 3 aprobada y aceptada”. Rama `fase-3-ingesta-normalizacion`, basada en `origin/main` e incluye el commit local de Fase 2. Typecheck/build pasan; `/api/users` se verificó posteriormente desde la UI en Fase 6 con 10 usuarios cargados. |
 | Fase 4 | Tabla y edición | Aceptada por el usuario | 2026-10-19 | Inicio aprobado: “ya hice push inicia fase 4”; aceptación: “aprobada fase 4 en el navegador”. Rama `fase-4-tabla-edicion`, creada desde `origin/main` después de sincronizar el push de Fase 3. Typecheck/build pasan; el envío individual sigue en `501` hasta Fase 5. |
 | Fase 5 | Sincronización individual | Aceptada por el usuario | 2026-10-19 | Inicio aprobado: “ya agregue las variables de entorno, puedes iniciar la fase 5”. Aceptación: usuario confirma creación correcta en Zoho desde el navegador después de actualizar contactos previamente existentes. Rama `fase-5-sincronizacion-individual`; typecheck/build pasan. Configuración sensible local, fuera de Git. |
 | Fase 6 | Sincronización masiva y resultados parciales | Aceptada por el usuario | 2026-10-19 | Inicio aprobado: “ya hice commit y push, inicia la fase 6”. Aceptación explícita: “fase 6 aprobada, ya los datos estan en zoho”. Rama `fase-6-sincronizacion-masiva`, creada desde `origin/main` en `7ca1a70`. Typecheck/build pasan con Node 22.21.1; la UI se verificó sin envío durante las comprobaciones del agente. |
-| Fase 7 | Entrega | Pendiente | — | — |
+| Fase 7 | Documentación, revisión y entrega | Inicio aprobado; en curso | 2026-10-19 | Aprobación explícita: “perfecto ya hice push, finalicemos con la fase 7”. Rama `fase-7-documentacion-entrega`, creada desde `origin/main` actualizado al commit `e194aa8`. |

@@ -4,7 +4,7 @@ Plan y documentación inicial para la prueba descrita en [`Proyecto.txt`](Proyec
 
 ## Estado
 
-Este commit inicial contiene los requisitos y el plan de implementación. La aplicación todavía no está creada, por lo que aún no hay comandos de instalación o ejecución. La generación de código queda sujeta a la aprobación de la fase de implementación correspondiente, de acuerdo con [`AGENTS.md`](AGENTS.md) y [`plan de implementacion.md`](plan%20de%20implementacion.md).
+Fase 2: esqueleto local React/Vite/TypeScript y servidor Node de desarrollo. La carga de usuarios y la integración Zoho se incorporarán en fases posteriores aprobadas.
 
 ## Diseño acordado
 
@@ -13,6 +13,15 @@ Este commit inicial contiene los requisitos y el plan de implementación. La apl
 - La UI, los casos de uso, los servicios, el dominio y los adaptadores Zoho tendrán responsabilidades separadas. La sincronización individual y masiva secuencial reutilizará un único caso de uso central.
 - Los usuarios inválidos no podrán seleccionarse. La sincronización reportará resultados por registro y continuará aunque falle un elemento.
 - El access token se generará manualmente con OAuth; la aplicación no automatizará su renovación en esta prueba.
+
+## Requisitos y ejecución local
+
+- Node.js `20.19+` o `22.12+`; se recomienda Node 22 (ver `.nvmrc`). Vite actual requiere una de esas versiones.
+- Ejecuta `npm install` y después `npm run dev`.
+- Vite sirve la UI en `http://127.0.0.1:5173`; la API local escucha solo en `127.0.0.1:8787`. Las peticiones `/api` se reenvían a la API local mediante el proxy de Vite.
+- `GET /api/health` comprueba la disponibilidad de la API. `POST /api/contacts/sync` devuelve `501` hasta la fase que implementa la sincronización.
+- Para futuras integraciones, copia `.env.example` a `.env.local` y configura secretos solo después de aprobar esa fase. El servidor local carga `.env.local`; ninguna variable se expone con prefijo `VITE_`.
+- `npm run typecheck` revisa los proyectos TypeScript y `npm run build` genera el build de frontend.
 
 ## Configuración segura prevista
 
@@ -35,4 +44,4 @@ Los criterios, fases, aprobaciones, decisiones y pendientes están en [`plan de 
 
 ## Próximo paso
 
-La documentación inicial y `main` ya están publicadas en el remoto. La aplicación aún no se ha creado. Se requiere aprobación del alcance de implementación antes de comenzar la Fase 2.
+Consulta el plan para ver las puertas de aprobación por fase, decisiones y pendientes. La rama de trabajo de esta fase es `fase-2-esqueleto-seguro`.

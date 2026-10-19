@@ -122,15 +122,15 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 **Tareas**
 
-- [ ] Crear/configurar el proyecto y las herramientas acordadas en rama `fase-2-esqueleto-seguro`.
-- [ ] Habilitar opciones estrictas de tipado y configuración de entorno; definir ejemplo de variables sin valores sensibles y reglas de exclusión del control de versiones.
-- [ ] Configurar proxy/API route de servidor para solicitudes a Zoho, CORS permitido para el origen de la aplicación y respuestas de error saneadas.
-- [ ] Crear capa/configuración compartida de transporte HTTP solo si simplifica necesidades reales: timeout, serialización, errores normalizados y cabeceras permitidas.
-- [ ] Registrar instrucciones de arranque y seguridad en README, sin incluir secretos.
+- [x] Crear/configurar proyecto React/Vite/TypeScript y herramientas acordadas en `fase-2-esqueleto-seguro`.
+- [x] Habilitar opciones estrictas de tipado y configuración del entorno; definir `.env.example` sin valores sensibles y reglas de exclusión en Git.
+- [x] Configurar Vite para reenviar `/api` al servidor Node local enlazado solo a `127.0.0.1`. El servidor expone health y una ruta de sincronización provisional `501`; la llamada Zoho real se implementará en Fase 5. El navegador usa mismo origen y no solicita CORS directo a Zoho.
+- [x] Revisar capa HTTP compartida: se difiere hasta las fases que implementen clientes externos, pues en este esqueleto no hay dos solicitudes HTTP reutilizables ni comportamiento de transporte que abstraer.
+- [x] Registrar instrucciones de arranque, requisito de Node y configuración segura en README, sin incluir secretos.
 
 **Criterio de salida:** estructura compilable, secretos solo del lado servidor, configuración reproducible y flujo CORS arquitectónico explicado. Aprobación para Fase 3.
 
-**Estado:** pendiente de Fase 1.
+**Estado:** completada y aceptada por el usuario en la rama `fase-2-esqueleto-seguro`; typecheck/build y funcionamiento de endpoints confirmados. Inicio de Fase 3 pendiente de aprobación explícita.
 
 ### Fase 3 — Ingesta, normalización y clasificación
 
@@ -230,7 +230,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 |---|---|---|---|---|
 | Fase 0 | Preparación y aclaraciones | Completada | 2026-10-19 | Usuario confirmó repositorio configurado, convención de ramas, credenciales disponibles, datacenter/URLs, React/Vite/TypeScript estricto, uso local y aprobación por un desarrollador. `main` fue publicada con documentación y la plantilla de entorno sin secretos. |
 | Fase 1 | Diseño técnico | Completada | 2026-10-19 | Diseño, DTO, mapping, seguridad, variables de entorno de ejemplo y estados documentados y publicados. No se generó código de producto. La Fase 2 requiere aprobación explícita. |
-| Fase 2 | Esqueleto seguro | Pendiente | — | — |
+| Fase 2 | Esqueleto seguro | Aceptada por el usuario | 2026-10-19 | Rama `fase-2-esqueleto-seguro`; usuario confirma Node 22 con nvm y funcionamiento de endpoints. Typecheck/build completados. `POST /api/contacts/sync` sigue en 501 hasta Fase 5. Inicio de Fase 3 pendiente de aprobación explícita. |
 | Fase 3 | Ingesta y transformación | Pendiente | — | — |
 | Fase 4 | Tabla y edición | Pendiente | — | — |
 | Fase 5 | Sincronización individual | Pendiente | — | — |

@@ -146,7 +146,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 **Criterio de salida:** datos transformados de forma consistente antes de llegar a presentación; registros inválidos identificables y sin selección. Aprobación para Fase 4.
 
-**Estado:** implementación completada en `fase-3-ingesta-normalizacion`; typecheck y build pasan. Smoke check HTTP de `/api/users` quedó pendiente porque el puerto local `8787` ya estaba ocupado por un proceso existente inaccesible desde el sandbox. Espera revisión/aceptación del usuario antes de Fase 4.
+**Estado:** completada y aceptada por el usuario en `fase-3-ingesta-normalizacion`; typecheck y build pasan. Smoke check HTTP de `/api/users` quedó pendiente porque el puerto local `8787` estaba ocupado por un proceso existente inaccesible desde el sandbox. La Fase 4 requiere aprobación explícita.
 
 ### Fase 4 — Tabla y edición individual
 
@@ -231,7 +231,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 | Fase 0 | Preparación y aclaraciones | Completada | 2026-10-19 | Usuario confirmó repositorio configurado, convención de ramas, credenciales disponibles, datacenter/URLs, React/Vite/TypeScript estricto, uso local y aprobación por un desarrollador. `main` fue publicada con documentación y la plantilla de entorno sin secretos. |
 | Fase 1 | Diseño técnico | Completada | 2026-10-19 | Diseño, DTO, mapping, seguridad, variables de entorno de ejemplo y estados documentados y publicados. No se generó código de producto. La Fase 2 requiere aprobación explícita. |
 | Fase 2 | Esqueleto seguro | Aceptada por el usuario | 2026-10-19 | Rama `fase-2-esqueleto-seguro`; usuario confirma Node 22 con nvm y funcionamiento de endpoints. Typecheck/build completados. Commit local `e4f9119`; `POST /api/contacts/sync` sigue en 501 hasta Fase 5. |
-| Fase 3 | Ingesta y transformación | Implementada; pendiente de aceptación | 2026-10-19 | Aprobación explícita: “agrega commits para iniciar la fase 3”. Rama `fase-3-ingesta-normalizacion`, basada en `origin/main` e incluye el commit local de Fase 2. Typecheck/build pasan; smoke HTTP de `/api/users` pendiente por ocupación del puerto 8787. |
+| Fase 3 | Ingesta y transformación | Aceptada por el usuario | 2026-10-19 | Aprobación de inicio: “agrega commits para iniciar la fase 3”; aceptación: “Fase 3 aprobada y aceptada”. Rama `fase-3-ingesta-normalizacion`, basada en `origin/main` e incluye el commit local de Fase 2. Typecheck/build pasan; smoke HTTP de `/api/users` pendiente por ocupación del puerto 8787. Fase 4 aún requiere aprobación explícita. |
 | Fase 4 | Tabla y edición | Pendiente | — | — |
 | Fase 5 | Sincronización individual | Pendiente | — | — |
 | Fase 6 | Sincronización masiva | Pendiente | — | — |

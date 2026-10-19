@@ -154,15 +154,15 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 **Tareas**
 
-- [ ] Renderizar Name, Email, Phone y Company Name en tabla adaptable y accesible.
-- [ ] Diferenciar visualmente registros inválidos (por ejemplo, estilo atenuado) sin depender solo del color.
-- [ ] Incorporar acción Editar y formulario precargado con validación y preservación de datos ante errores.
-- [ ] Mostrar estado de envío y resultado del contacto al guardar.
-- [ ] Asegurar que el flujo de edición usa el cliente del servicio centralizado de sincronización; la implementación servidor se habilita en Fase 5. En Fase 4 la ruta provisional devuelve `NOT_IMPLEMENTED`; mostrar el fallo real y conservar los cambios del formulario, sin simular éxito.
+- [x] Renderizar Name, Email, Phone y Company Name en tabla adaptable, desplazable y accesible.
+- [x] Diferenciar visualmente registros inválidos con estilo atenuado y etiqueta textual, sin depender solo del color.
+- [x] Incorporar acción Editar y formulario precargado con validación y preservación de datos ante errores.
+- [x] Mostrar estado de envío y resultado del contacto; el endpoint provisional informa `NOT_IMPLEMENTED` sin afirmar éxito.
+- [x] Asegurar que el flujo de edición usa el cliente del servicio centralizado de sincronización; la implementación servidor se habilita en Fase 5. En Fase 4 la ruta provisional devuelve `NOT_IMPLEMENTED`; mostrar el fallo real y conservar los cambios del formulario, sin simular éxito.
 
 **Criterio de salida:** tabla y edición cumplen campos, estados y accesibilidad acordados; no se simula una sincronización exitosa antes de integrar Zoho. Aprobación para Fase 5.
 
-**Estado:** aprobada por el usuario el 2026-10-19 e iniciada en `fase-4-tabla-edicion`, basada en `origin/main` sincronizada. Zoho y la persistencia real siguen fuera de alcance.
+**Estado:** implementación completada en `fase-4-tabla-edicion`; typecheck y build pasan. El envío individual recibe el fallo provisional `501 NOT_IMPLEMENTED` hasta Fase 5. Pendiente de revisión/aceptación del usuario antes de Fase 5.
 
 ### Fase 5 — Sincronización individual con Zoho
 
@@ -232,7 +232,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 | Fase 1 | Diseño técnico | Completada | 2026-10-19 | Diseño, DTO, mapping, seguridad, variables de entorno de ejemplo y estados documentados y publicados. No se generó código de producto. La Fase 2 requiere aprobación explícita. |
 | Fase 2 | Esqueleto seguro | Aceptada por el usuario | 2026-10-19 | Rama `fase-2-esqueleto-seguro`; usuario confirma Node 22 con nvm y funcionamiento de endpoints. Typecheck/build completados. Commit local `e4f9119`; `POST /api/contacts/sync` sigue en 501 hasta Fase 5. |
 | Fase 3 | Ingesta y transformación | Aceptada por el usuario | 2026-10-19 | Aprobación de inicio: “agrega commits para iniciar la fase 3”; aceptación: “Fase 3 aprobada y aceptada”. Rama `fase-3-ingesta-normalizacion`, basada en `origin/main` e incluye el commit local de Fase 2. Typecheck/build pasan; smoke HTTP de `/api/users` pendiente por ocupación del puerto 8787. Fase 4 aún requiere aprobación explícita. |
-| Fase 4 | Tabla y edición | Aprobada e iniciada | 2026-10-19 | Aprobación explícita: “ya hice push inicia fase 4”. Rama `fase-4-tabla-edicion`, creada desde `origin/main` después de sincronizar el push de Fase 3. |
+| Fase 4 | Tabla y edición | Implementada; pendiente de aceptación | 2026-10-19 | Aprobación explícita: “ya hice push inicia fase 4”. Rama `fase-4-tabla-edicion`, creada desde `origin/main` después de sincronizar el push de Fase 3. Typecheck/build pasan; no se hizo prueba manual del flujo HTTP. El endpoint de sincronización sigue en `501` hasta Fase 5. |
 | Fase 5 | Sincronización individual | Pendiente | — | — |
 | Fase 6 | Sincronización masiva | Pendiente | — | — |
 | Fase 7 | Entrega | Pendiente | — | — |

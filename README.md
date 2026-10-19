@@ -4,7 +4,7 @@ Plan y documentación inicial para la prueba descrita en [`Proyecto.txt`](Proyec
 
 ## Estado
 
-Fase 3: la aplicación obtiene usuarios de JSONPlaceholder a través del servidor local, valida la respuesta, normaliza teléfono y website, y clasifica empresas antes de presentar un resumen. La integración Zoho se incorporará en su fase aprobada.
+Fase 4: la aplicación obtiene y clasifica usuarios de JSONPlaceholder, los presenta en una tabla accesible y permite editar cada registro. El envío conserva el borrador y muestra el `501` del servidor provisional hasta que se implemente Zoho en Fase 5.
 
 ## Diseño acordado
 

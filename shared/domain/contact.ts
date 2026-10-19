@@ -13,6 +13,16 @@ export interface ContactRecord {
   eligibility: ContactEligibility;
 }
 
+export interface ContactDraft {
+  sourceUserId: number;
+  username: string;
+  name: string;
+  email: string;
+  phone: string;
+  website: string;
+  companyName: string;
+}
+
 export function normalizePhone(phone: string): string {
   const withoutExtension = phone.replace(/(?:ext\.?|x|#)\s*\d.*$/i, "");
   return withoutExtension.replace(/\D/g, "");

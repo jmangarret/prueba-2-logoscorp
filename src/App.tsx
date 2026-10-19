@@ -1,5 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import type { ContactRecord } from "../shared/domain/contact";
+import {
+  toContactRecord,
+  type ContactDraft,
+  type ContactRecord,
+} from "../shared/domain/contact";
+import { ContactEditForm } from "./components/ContactEditForm";
+import { ContactTable } from "./components/ContactTable";
 import { fetchUsers } from "./services/users-api";
 
 type ApiHealth = { status: "ok" };
@@ -22,6 +28,8 @@ export default function App() {
   const [health, setHealth] = useState<HealthState>("loading");
   const [usersState, setUsersState] = useState<UsersState>({ status: "loading" });
   const [reloadKey, setReloadKey] = useState(0);
+  const [editingContact, setEditingContact] = useState<ContactRecord | null>(null);
+  const [announcement, setAnnouncement] = useState("");
 
   const loadUsers = useCallback(async (signal: AbortSignal) => {
     setUsersState({ status: "loading" });
@@ -78,6 +86,21 @@ export default function App() {
   const validCount = users.filter((user) => user.eligibility === "valid").length;
   const invalidCount = users.length - validCount;
 
+  function handleContactSaved(draft: ContactDraft) {
+    setUsersState((current) => {
+      if (current.status !== "loaded") return current;
+      return {
+        status: "loaded",
+        users: current.users.map((contact) =>
+          contact.sourceUserId === draft.sourceUserId
+            ? toContactRecord({ ...draft, id: draft.sourceUserId })
+            : contact,
+        ),
+      };
+    });
+    setAnnouncement(`Contacto ${draft.name} guardado en Zoho CRM.`);
+  }
+
   return (
     <main className="shell">
       <section className="panel" aria-labelledby="page-title">
@@ -112,11 +135,33 @@ export default function App() {
             <p role="status">No se encontraron usuarios.</p>
           )}
           {usersState.status === "loaded" && users.length > 0 && (
-            <dl className="summary" aria-live="polite">
-              <div><dt>Total cargados</dt><dd>{users.length}</dd></div>
-              <div><dt>Empresas válidas</dt><dd>{validCount}</dd></div>
-              <div><dt>Empresas inválidas</dt><dd>{invalidCount}</dd></div>
-            </dl>
+            <>
+              <dl className="summary" aria-live="polite">
+                <div><dt>Total cargados</dt><dd>{users.length}</dd></div>
+                <div><dt>Empresas válidas</dt><dd>{validCount}</dd></div>
+                <div><dt>Empresas inválidas</dt><dd>{invalidCount}</dd></div>
+              </dl>
+              <ContactTable
+                contacts={users}
+                onEdit={(contact) => {
+                  setAnnouncement("");
+                  setEditingContact(contact);
+                }}
+              />
+            </>
+          )}
+          {announcement && (
+            <p className="sr-only" role="status" aria-live="polite">
+              {announcement}
+            </p>
+          )}
+          {editingContact && (
+            <ContactEditForm
+              key={editingContact.sourceUserId}
+              contact={editingContact}
+              onClose={() => setEditingContact(null)}
+              onSuccess={handleContactSaved}
+            />
           )}
         </section>
       </section>

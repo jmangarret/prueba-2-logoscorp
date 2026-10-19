@@ -54,8 +54,10 @@ const server = createServer((request, response) => {
   ) {
     sendJson(response, 501, {
       ok: false,
-      code: "NOT_IMPLEMENTED",
-      message: "La sincronización se habilitará en una fase posterior.",
+      error: {
+        code: "NOT_IMPLEMENTED",
+        message: "La sincronización se habilitará en la Fase 5.",
+      },
     });
     return;
   }

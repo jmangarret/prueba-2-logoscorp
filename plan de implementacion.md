@@ -180,7 +180,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 **Criterio de salida:** flujo individual crea en CRM únicamente ante respuesta exitosa de Zoho; el caso simulado falla sin persistir; fallos recuperables conservan la edición. Aprobación para Fase 6.
 
-**Estado:** implementación completada en `fase-5-sincronizacion-individual`; typecheck/build pasan. No se ejecutaron llamadas mutables a Zoho. El usuario indica que configuró las variables, pero ninguna está disponible en el proceso de Codex y `.env.local` no existe en este checkout; el flujo real requiere reiniciar el servidor con las variables disponibles. Pendiente de revisión/aceptación del usuario antes de Fase 6.
+**Estado:** completada y aceptada por el usuario en `fase-5-sincronizacion-individual`; typecheck/build pasan y el usuario confirmó en el navegador la creación de un contacto en Zoho. Una prueba anterior recibió `ZOHO_REJECTED` porque el usuario ya había registrado previamente esos usuarios; tras actualizar los datos, la sincronización se completó correctamente. No se guarda el identificador del registro en este plan. La Fase 6 requiere aprobación explícita.
 
 ### Fase 6 — Sincronización masiva y resultados parciales
 
@@ -224,7 +224,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 | P-03 | Contrato de creación de contactos Zoho y mapping de campos | Evita suposiciones de integración | Usuario + agente | Aprobados; diseño documentado en Fase 1. Asociación de cuenta excluida salvo aprobación de alcance adicional |
 | P-04 | Sensibilidad a mayúsculas de la regla de empresa | Afecta clasificación | Usuario | Resuelto: comparar sin distinguir mayúsculas |
 | P-05 | Concurrencia del lote | Afecta cuotas y resiliencia | Usuario | Resuelto: secuencial; son pocos registros de la API pública |
-| P-06 | Hacer disponibles las variables de Zoho al proceso del servidor local antes de usar el flujo real | Sin configuración server-side el endpoint debe responder de forma segura y no puede autenticarse | Usuario | El usuario afirma que las configuró; en esta ejecución no existen `.env.local` ni variables heredadas visibles. Valores no inspeccionados ni registrados. No bloquea la implementación; bloqueará llamadas reales hasta que el servidor local reciba la configuración. |
+| P-06 | Hacer disponibles las variables de Zoho al proceso del servidor local antes de usar el flujo real | Sin configuración server-side el endpoint debe responder de forma segura y no puede autenticarse | Usuario | Resuelto: el usuario configuró las variables localmente y confirmó una creación exitosa en Zoho. Los valores no se inspeccionan ni registran. |
 
 ## Registro de aprobaciones
 
@@ -235,6 +235,6 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 | Fase 2 | Esqueleto seguro | Aceptada por el usuario | 2026-10-19 | Rama `fase-2-esqueleto-seguro`; usuario confirma Node 22 con nvm y funcionamiento de endpoints. Typecheck/build completados. Commit local `e4f9119`; `POST /api/contacts/sync` sigue en 501 hasta Fase 5. |
 | Fase 3 | Ingesta y transformación | Aceptada por el usuario | 2026-10-19 | Aprobación de inicio: “agrega commits para iniciar la fase 3”; aceptación: “Fase 3 aprobada y aceptada”. Rama `fase-3-ingesta-normalizacion`, basada en `origin/main` e incluye el commit local de Fase 2. Typecheck/build pasan; smoke HTTP de `/api/users` pendiente por ocupación del puerto 8787. Fase 4 aún requiere aprobación explícita. |
 | Fase 4 | Tabla y edición | Aceptada por el usuario | 2026-10-19 | Inicio aprobado: “ya hice push inicia fase 4”; aceptación: “aprobada fase 4 en el navegador”. Rama `fase-4-tabla-edicion`, creada desde `origin/main` después de sincronizar el push de Fase 3. Typecheck/build pasan; el envío individual sigue en `501` hasta Fase 5. |
-| Fase 5 | Sincronización individual | Implementada; pendiente de aceptación | 2026-10-19 | Aprobación explícita: “ya agregue las variables de entorno, puedes iniciar la fase 5”. Rama `fase-5-sincronizacion-individual`, creada desde `origin/main` sincronizada. Typecheck/build pasan. Sin llamadas mutables a Zoho; variables declaradas por el usuario no están disponibles en el entorno del agente. |
+| Fase 5 | Sincronización individual | Aceptada por el usuario | 2026-10-19 | Inicio aprobado: “ya agregue las variables de entorno, puedes iniciar la fase 5”. Aceptación: usuario confirma creación correcta en Zoho desde el navegador después de actualizar contactos previamente existentes. Rama `fase-5-sincronizacion-individual`; typecheck/build pasan. Configuración sensible local, fuera de Git. |
 | Fase 6 | Sincronización masiva | Pendiente | — | — |
 | Fase 7 | Entrega | Pendiente | — | — |

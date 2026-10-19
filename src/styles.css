@@ -85,3 +85,58 @@ h1 {
 .status--unavailable .status__dot {
   background: #e27474;
 }
+
+.users {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid #263448;
+}
+
+.users h2 {
+  margin: 0 0 16px;
+  font-size: 1.05rem;
+}
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.summary div {
+  padding: 14px;
+  border: 1px solid #263448;
+  border-radius: 12px;
+}
+
+.summary dt {
+  color: #a6b5c8;
+  font-size: 0.8rem;
+}
+
+.summary dd {
+  margin: 8px 0 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.notice--error {
+  color: #ffc3c3;
+}
+
+button {
+  min-height: 42px;
+  padding: 8px 14px;
+  border: 1px solid #638fc4;
+  border-radius: 8px;
+  background: #183252;
+  color: #e5edf7;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 3px solid #8cb8f4;
+  outline-offset: 2px;
+}

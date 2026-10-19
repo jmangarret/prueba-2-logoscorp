@@ -1,4 +1,6 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
+import type { UsersApiResponse } from "../shared/contracts/users";
+import { UsersServiceError, getUsers } from "./services/jsonplaceholder-users";
 
 const host = "127.0.0.1";
 const port = 8787;
@@ -21,6 +23,28 @@ const server = createServer((request, response) => {
 
   if (request.method === "GET" && requestUrl.pathname === "/api/health") {
     sendJson(response, 200, { status: "ok" });
+    return;
+  }
+
+  if (request.method === "GET" && requestUrl.pathname === "/api/users") {
+    void getUsers()
+      .then((users) => {
+        const body: UsersApiResponse = { ok: true, data: users };
+        sendJson(response, 200, body);
+      })
+      .catch((error: unknown) => {
+        const body: UsersApiResponse = {
+          ok: false,
+          error:
+            error instanceof UsersServiceError
+              ? { code: error.code, message: error.message }
+              : {
+                  code: "INTERNAL_ERROR",
+                  message: "Ocurrió un error al cargar los usuarios.",
+                },
+        };
+        sendJson(response, error instanceof UsersServiceError ? 502 : 500, body);
+      });
     return;
   }
 

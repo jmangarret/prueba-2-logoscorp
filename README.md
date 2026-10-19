@@ -4,7 +4,7 @@ Plan y documentación inicial para la prueba descrita en [`Proyecto.txt`](Proyec
 
 ## Estado
 
-Fase 2: esqueleto local React/Vite/TypeScript y servidor Node de desarrollo. La carga de usuarios y la integración Zoho se incorporarán en fases posteriores aprobadas.
+Fase 3: la aplicación obtiene usuarios de JSONPlaceholder a través del servidor local, valida la respuesta, normaliza teléfono y website, y clasifica empresas antes de presentar un resumen. La integración Zoho se incorporará en su fase aprobada.
 
 ## Diseño acordado
 
@@ -19,7 +19,7 @@ Fase 2: esqueleto local React/Vite/TypeScript y servidor Node de desarrollo. La 
 - Node.js `20.19+` o `22.12+`; se recomienda Node 22 (ver `.nvmrc`). Vite actual requiere una de esas versiones.
 - Ejecuta `npm install` y después `npm run dev`.
 - Vite sirve la UI en `http://127.0.0.1:5173`; la API local escucha solo en `127.0.0.1:8787`. Las peticiones `/api` se reenvían a la API local mediante el proxy de Vite.
-- `GET /api/health` comprueba la disponibilidad de la API. `POST /api/contacts/sync` devuelve `501` hasta la fase que implementa la sincronización.
+- `GET /api/health` comprueba la disponibilidad de la API. `GET /api/users` obtiene, valida y transforma datos de JSONPlaceholder. `POST /api/contacts/sync` devuelve `501` hasta la fase que implementa la sincronización.
 - Para futuras integraciones, copia `.env.example` a `.env.local` y configura secretos solo después de aprobar esa fase. El servidor local carga `.env.local`; ninguna variable se expone con prefijo `VITE_`.
 - `npm run typecheck` revisa los proyectos TypeScript y `npm run build` genera el build de frontend.
 

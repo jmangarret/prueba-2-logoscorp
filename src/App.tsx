@@ -1,7 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import type { ContactRecord } from "../shared/domain/contact";
+import { fetchUsers } from "./services/users-api";
 
 type ApiHealth = { status: "ok" };
 type HealthState = "loading" | "available" | "unavailable";
+type UsersState =
+  | { status: "loading" }
+  | { status: "loaded"; users: ContactRecord[] }
+  | { status: "error"; message: string };
 
 function isApiHealth(value: unknown): value is ApiHealth {
   return (
@@ -14,6 +20,23 @@ function isApiHealth(value: unknown): value is ApiHealth {
 
 export default function App() {
   const [health, setHealth] = useState<HealthState>("loading");
+  const [usersState, setUsersState] = useState<UsersState>({ status: "loading" });
+  const [reloadKey, setReloadKey] = useState(0);
+
+  const loadUsers = useCallback(async (signal: AbortSignal) => {
+    setUsersState({ status: "loading" });
+    try {
+      const users = await fetchUsers(signal);
+      if (!signal.aborted) setUsersState({ status: "loaded", users });
+    } catch (error: unknown) {
+      if (!signal.aborted) {
+        setUsersState({
+          status: "error",
+          message: error instanceof Error ? error.message : "Ocurrió un error inesperado.",
+        });
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -40,11 +63,20 @@ export default function App() {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    const controller = new AbortController();
+    void loadUsers(controller.signal);
+    return () => controller.abort();
+  }, [loadUsers, reloadKey]);
+
   const statusLabel = {
     loading: "Comprobando servidor local…",
     available: "Servidor local disponible",
     unavailable: "Servidor local no disponible",
   }[health];
+  const users = usersState.status === "loaded" ? usersState.users : [];
+  const validCount = users.filter((user) => user.eligibility === "valid").length;
+  const invalidCount = users.length - validCount;
 
   return (
     <main className="shell">
@@ -52,8 +84,8 @@ export default function App() {
         <p className="eyebrow">Prueba técnica · LogosCorp</p>
         <h1 id="page-title">Sincronización con Zoho CRM</h1>
         <p className="intro">
-          La estructura local está preparada. La carga y sincronización de
-          contactos se incorporarán en las siguientes fases aprobadas.
+          Los datos se cargan desde JSONPlaceholder y se normalizan en el servidor
+          antes de llegar a esta aplicación.
         </p>
         <p
           className={`status status--${health}`}
@@ -63,6 +95,30 @@ export default function App() {
           <span className="status__dot" aria-hidden="true" />
           {statusLabel}
         </p>
+        <section className="users" aria-labelledby="users-title">
+          <h2 id="users-title">Carga de usuarios</h2>
+          {usersState.status === "loading" && (
+            <p role="status" aria-live="polite">Cargando usuarios…</p>
+          )}
+          {usersState.status === "error" && (
+            <div className="notice notice--error" role="alert">
+              <p>{usersState.message}</p>
+              <button type="button" onClick={() => setReloadKey((key) => key + 1)}>
+                Reintentar
+              </button>
+            </div>
+          )}
+          {usersState.status === "loaded" && users.length === 0 && (
+            <p role="status">No se encontraron usuarios.</p>
+          )}
+          {usersState.status === "loaded" && users.length > 0 && (
+            <dl className="summary" aria-live="polite">
+              <div><dt>Total cargados</dt><dd>{users.length}</dd></div>
+              <div><dt>Empresas válidas</dt><dd>{validCount}</dd></div>
+              <div><dt>Empresas inválidas</dt><dd>{invalidCount}</dd></div>
+            </dl>
+          )}
+        </section>
       </section>
     </main>
   );

@@ -138,15 +138,15 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 **Tareas**
 
-- [ ] Implementar cliente/servicio de lectura de `https://jsonplaceholder.typicode.com/users` con tipos y errores controlados.
-- [ ] Validar la forma de la respuesta externa en el límite del servicio.
-- [ ] Implementar funciones puras reutilizables de normalización de teléfono y website.
-- [ ] Implementar clasificación de empresa conforme a la regla acordada, conservando explícitamente el estado válido/inválido.
-- [ ] Exponer estados de carga, vacío y error recuperable a la UI.
+- [x] Implementar servicio servidor para `https://jsonplaceholder.typicode.com/users` con timeout y errores controlados; el navegador accede mediante `/api/users` del mismo origen.
+- [x] Validar la forma de la respuesta externa en el límite del servicio y la respuesta local en el cliente.
+- [x] Implementar funciones puras reutilizables de normalización de teléfono y website en `shared/domain/contact.ts`.
+- [x] Implementar clasificación de empresa conforme a la regla acordada, conservando explícitamente `eligibility: valid | invalid`.
+- [x] Exponer estados de carga, vacío, error recuperable con reintento y resumen de clasificación a la UI.
 
 **Criterio de salida:** datos transformados de forma consistente antes de llegar a presentación; registros inválidos identificables y sin selección. Aprobación para Fase 4.
 
-**Estado:** aprobada por el usuario el 2026-10-19 e iniciada en `fase-3-ingesta-normalizacion`, rama local creada desde `origin/main` e incluyendo el commit de Fase 2. No hacer push ni PR sin autorización específica.
+**Estado:** implementación completada en `fase-3-ingesta-normalizacion`; typecheck y build pasan. Smoke check HTTP de `/api/users` quedó pendiente porque el puerto local `8787` ya estaba ocupado por un proceso existente inaccesible desde el sandbox. Espera revisión/aceptación del usuario antes de Fase 4.
 
 ### Fase 4 — Tabla y edición individual
 
@@ -231,7 +231,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 | Fase 0 | Preparación y aclaraciones | Completada | 2026-10-19 | Usuario confirmó repositorio configurado, convención de ramas, credenciales disponibles, datacenter/URLs, React/Vite/TypeScript estricto, uso local y aprobación por un desarrollador. `main` fue publicada con documentación y la plantilla de entorno sin secretos. |
 | Fase 1 | Diseño técnico | Completada | 2026-10-19 | Diseño, DTO, mapping, seguridad, variables de entorno de ejemplo y estados documentados y publicados. No se generó código de producto. La Fase 2 requiere aprobación explícita. |
 | Fase 2 | Esqueleto seguro | Aceptada por el usuario | 2026-10-19 | Rama `fase-2-esqueleto-seguro`; usuario confirma Node 22 con nvm y funcionamiento de endpoints. Typecheck/build completados. Commit local `e4f9119`; `POST /api/contacts/sync` sigue en 501 hasta Fase 5. |
-| Fase 3 | Ingesta y transformación | Aprobada e iniciada | 2026-10-19 | Aprobación explícita: “agrega commits para iniciar la fase 3”. Rama `fase-3-ingesta-normalizacion`, basada en `origin/main` e incluye el commit local de Fase 2. |
+| Fase 3 | Ingesta y transformación | Implementada; pendiente de aceptación | 2026-10-19 | Aprobación explícita: “agrega commits para iniciar la fase 3”. Rama `fase-3-ingesta-normalizacion`, basada en `origin/main` e incluye el commit local de Fase 2. Typecheck/build pasan; smoke HTTP de `/api/users` pendiente por ocupación del puerto 8787. |
 | Fase 4 | Tabla y edición | Pendiente | — | — |
 | Fase 5 | Sincronización individual | Pendiente | — | — |
 | Fase 6 | Sincronización masiva | Pendiente | — | — |

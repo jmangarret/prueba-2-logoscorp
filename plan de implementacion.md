@@ -197,7 +197,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 **Criterio de salida:** resultados parciales no abortan el lote; contadores corresponden a respuestas del servidor; individual y masivo comparten servicio. Aprobación para Fase 7.
 
-**Estado:** implementación completada en `fase-6-sincronizacion-masiva`; `npm run typecheck` y `npm run build` pasan con Node 22.21.1. La interfaz local confirma que solo filas válidas tienen checkbox y que la selección habilita/deshabilita la acción. No se ejecutó un lote contra Zoho para evitar crear contactos reales durante la verificación; la aceptación de la fase corresponde al usuario.
+**Estado:** completada y aceptada por el usuario en `fase-6-sincronizacion-masiva`; `npm run typecheck` y `npm run build` pasan con Node 22.21.1. La interfaz local confirma que solo filas válidas tienen checkbox y que la selección habilita/deshabilita la acción. El usuario confirma que los datos ya están en Zoho. La Fase 7 requiere aprobación explícita.
 
 ### Fase 7 — Documentación, revisión y entrega
 
@@ -236,5 +236,5 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 | Fase 3 | Ingesta y transformación | Aceptada por el usuario | 2026-10-19 | Aprobación de inicio: “agrega commits para iniciar la fase 3”; aceptación: “Fase 3 aprobada y aceptada”. Rama `fase-3-ingesta-normalizacion`, basada en `origin/main` e incluye el commit local de Fase 2. Typecheck/build pasan; smoke HTTP de `/api/users` pendiente por ocupación del puerto 8787. Fase 4 aún requiere aprobación explícita. |
 | Fase 4 | Tabla y edición | Aceptada por el usuario | 2026-10-19 | Inicio aprobado: “ya hice push inicia fase 4”; aceptación: “aprobada fase 4 en el navegador”. Rama `fase-4-tabla-edicion`, creada desde `origin/main` después de sincronizar el push de Fase 3. Typecheck/build pasan; el envío individual sigue en `501` hasta Fase 5. |
 | Fase 5 | Sincronización individual | Aceptada por el usuario | 2026-10-19 | Inicio aprobado: “ya agregue las variables de entorno, puedes iniciar la fase 5”. Aceptación: usuario confirma creación correcta en Zoho desde el navegador después de actualizar contactos previamente existentes. Rama `fase-5-sincronizacion-individual`; typecheck/build pasan. Configuración sensible local, fuera de Git. |
-| Fase 6 | Sincronización masiva y resultados parciales | Implementada; pendiente de aceptación | 2026-10-19 | Aprobación explícita: “ya hice commit y push, inicia la fase 6”. Rama `fase-6-sincronizacion-masiva`, creada desde `origin/main` actualizado al commit `7ca1a70`. Typecheck/build pasan con Node 22.21.1 y la UI se verificó sin enviar el lote a Zoho. |
+| Fase 6 | Sincronización masiva y resultados parciales | Aceptada por el usuario | 2026-10-19 | Inicio aprobado: “ya hice commit y push, inicia la fase 6”. Aceptación explícita: “fase 6 aprobada, ya los datos estan en zoho”. Rama `fase-6-sincronizacion-masiva`, creada desde `origin/main` en `7ca1a70`. Typecheck/build pasan con Node 22.21.1; la UI se verificó sin envío durante las comprobaciones del agente. |
 | Fase 7 | Entrega | Pendiente | — | — |

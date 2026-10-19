@@ -35,4 +35,4 @@ Los criterios, fases, aprobaciones, decisiones y pendientes están en [`plan de 
 
 ## Próximo paso
 
-Aprobar la salida de la Fase 1 y el alcance de la Fase 2 antes de crear la aplicación. El repositorio remoto está configurado, pero vacío; este commit inicial establecerá `main` localmente. El envío al remoto se hará solo con autorización explícita.
+Aprobar la salida de la Fase 1 y el alcance de la Fase 2 antes de crear la aplicación. `main` ya está inicializada localmente con la documentación. El remoto está configurado pero vacío; publicar `main` requiere autorización explícita.

@@ -19,7 +19,7 @@ Este documento es el plan de trabajo y la fuente de seguimiento. No autoriza por
 
 1. Antes de empezar una fase se presenta su alcance, tareas, archivos previstos, dependencias y criterios de aceptación. Esperar aprobación explícita del usuario; silencio no cuenta como aprobación.
 2. Una fase aprobada autoriza únicamente sus tareas listadas. Si aparece una decisión que cambie tecnología, alcance, seguridad, datos externos o entregables, detener esa tarea, documentar la decisión y pedir aprobación.
-3. Antes de cualquier cambio de código, comprobar que el repositorio Git está configurado y limpio, la rama base acordada está actualizada y no hay trabajo ajeno sin guardar. El remoto `origin` (`https://github.com/jmangarret/prueba-2-logoscorp.git`) respondió a la consulta de solo lectura; no devolvió `HEAD` ni `refs/heads/main`, por lo que GitHub es accesible pero el remoto no tiene referencias/commits. La rama local `main` tampoco tiene commits. No crear ni publicar otro repositorio; antes de la primera rama, acordar la inicialización de `main` remoto.
+3. Antes de cualquier cambio de código, comprobar que el repositorio Git está configurado y limpio, la rama base acordada está actualizada y no hay trabajo ajeno sin guardar. El remoto `origin` (`https://github.com/jmangarret/prueba-2-logoscorp.git`) respondió a la consulta de solo lectura; no devolvió `HEAD` ni `refs/heads/main`, por lo que GitHub es accesible pero el remoto sigue sin referencias/commits. La rama local `main` se inicializó con el commit documental `670b14e` (y el siguiente commit actualiza este registro). No crear ni publicar otro repositorio ni hacer push sin autorización.
 4. Para cada fase de implementación aprobada, trabajar en una rama dedicada basada en `main`, con nombre `fase-<n>-<tema>` (por ejemplo `fase-2-integracion-api`). No trabajar directamente en `main`. Si el usuario/repo ya define otra convención, proponerla antes de usarla.
 5. Mantener cambios acotados a la fase. Revisar el diff, comprobar los criterios acordados y documentar las verificaciones realizadas. No añadir pruebas ni ejecutar comandos de verificación fuera de lo solicitado por el usuario o requerido por la configuración del proyecto.
 6. Al completar una fase, presentar resumen y evidencia, riesgos y pendientes; preparar la rama para revisión. La integración a `main` se realiza mediante Pull Request y requiere aprobación explícita antes de abrirlo si no fue autorizada para esa fase. Merge, push, creación/publicación del repositorio y compartirlo con `jchonglogoscorp` y `Duboox` son acciones separadas que requieren autorización explícita cuando aún no se haya dado.
@@ -33,16 +33,16 @@ Este documento es el plan de trabajo y la fuente de seguimiento. No autoriza por
 
 **Tareas**
 
-- [x] Repositorio Git local configurado: remoto `origin` es `https://github.com/jmangarret/prueba-2-logoscorp.git`, rama local actual `main`; convención aprobada `fase-<n>-<tema>`. `git ls-remote` llegó al remoto sin error, pero no devolvió referencias; remoto y rama local están sin commits. Definir cómo iniciar `main` antes de crear la primera rama de fase.
+- [x] Repositorio Git local configurado: remoto `origin` es `https://github.com/jmangarret/prueba-2-logoscorp.git`, rama local actual `main`; convención aprobada `fase-<n>-<tema>`. `git ls-remote` llegó al remoto sin error, pero no devolvió referencias. El usuario autorizó e inició `main` localmente con los documentos; el remoto permanece vacío hasta una publicación autorizada.
 - [x] Usuario confirma disponibilidad de credenciales OAuth de Zoho y solicita definir solo los nombres de variables de entorno, sin configurar ni copiar valores. Nunca solicitar o incluir secretos en chat, commits o archivos versionados. Variables propuestas: `ZOHO_CLIENT_ID`, `ZOHO_CLIENT_SECRET`, `ZOHO_REFRESH_TOKEN`, `ZOHO_ACCESS_TOKEN`, `ZOHO_ACCOUNTS_URL`, `ZOHO_API_BASE_URL`. Los secretos solo se cargarán en un archivo local ignorado por Git cuando se apruebe la fase de implementación; `.env.example` contendrá nombres y valores de ejemplo no sensibles.
 - [x] Usuario confirma región/datacenter y las URLs `accounts.zoho.com` y `www.zohoapis.com` propuestas en `Proyecto.txt`.
 - [x] Aprobado React con Vite y TypeScript estricto, con capa servidor/proxy para Zoho. El mecanismo concreto se define en Fase 1; no inventar endpoints ni credenciales.
 - [x] Usuario confirma ejecución solo local; no se contempla despliegue.
 - [x] Un único desarrollador aprobará las fases/PR. Los criterios de aceptación se derivarán de `Proyecto.txt` y se detallarán por decisión técnica documentada en el plan; no se presuponen personas adicionales.
 
-**Criterio de salida:** decisiones anteriores registradas; acceso al remoto verificado, estado vacío identificado y estrategia de inicialización de `main` acordada antes de crear ramas; nombres de variables definidos sin valores secretos. Aprobación explícita para iniciar Fase 1.
+**Criterio de salida:** decisiones anteriores registradas; acceso al remoto verificado y estado vacío identificado; `main` local inicializada; nombres de variables definidos sin valores secretos. Aprobación explícita para iniciar Fase 1.
 
-**Estado:** completada en cuanto a aclaraciones. El remoto es accesible pero no contiene referencias; la inicialización de `main` deberá acordarse antes del primer cambio de código/creación de rama. Variables definidas sin valores.
+**Estado:** completada. El remoto es accesible pero aún no contiene referencias; `main` local fue iniciada con el commit documental `670b14e`. Variables definidas sin valores.
 
 ### Fase 1 — Diseño técnico y contratos
 
@@ -218,7 +218,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 | ID | Pendiente/decisión | Impacto | Responsable | Estado |
 |---|---|---|---|---|
-| P-01 | Inicializar `main` remoto vacío de forma acordada antes de crear la primera rama de fase | Necesario para flujo de ramas/PR | Usuario + agente | Acceso GitHub validado; remoto y local sin commits. Acordar método al comenzar implementación |
+| P-01 | Publicar `main` local en remoto vacío antes de crear PRs | Necesario para flujo de ramas/PR | Usuario + agente | `main` local inicializada con commit `670b14e`; remoto accesible y vacío. Push aún no autorizado |
 | P-02 | Definir nombres de variables de entorno Zoho sin valores ni configuración de secretos | Necesario para documentar integración sin exponer credenciales | Agente | Resuelto: `ZOHO_CLIENT_ID`, `ZOHO_CLIENT_SECRET`, `ZOHO_REFRESH_TOKEN`, `ZOHO_ACCESS_TOKEN`, `ZOHO_ACCOUNTS_URL`, `ZOHO_API_BASE_URL` |
 | P-03 | Contrato de creación de contactos Zoho y mapping de campos | Evita suposiciones de integración | Usuario + agente | Aprobados; diseño documentado en Fase 1. Asociación de cuenta excluida salvo aprobación de alcance adicional |
 | P-04 | Sensibilidad a mayúsculas de la regla de empresa | Afecta clasificación | Usuario | Resuelto: comparar sin distinguir mayúsculas |
@@ -228,7 +228,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 | Fase | Alcance presentado | Aprobación | Fecha | Notas |
 |---|---|---|---|---|
-| Fase 0 | Preparación y aclaraciones | Completada | 2026-10-19 | Usuario confirmó repositorio configurado, convención de ramas, credenciales disponibles, datacenter/URLs, React/Vite/TypeScript estricto, uso local y aprobación por un desarrollador. Acceso al remoto comprobado; remoto sin commits. Variables definidas sin valores. |
+| Fase 0 | Preparación y aclaraciones | Completada | 2026-10-19 | Usuario confirmó repositorio configurado, convención de ramas, credenciales disponibles, datacenter/URLs, React/Vite/TypeScript estricto, uso local y aprobación por un desarrollador. Acceso al remoto comprobado; `main` local iniciada con documentación. Variables definidas sin valores. |
 | Fase 1 | Diseño técnico | Inicio aprobado; salida pendiente | 2026-10-19 | El usuario aprobó iniciar la fase. Diseño, DTO, mapping, seguridad y estados quedaron documentados; solicitar aprobación de salida antes de Fase 2. |
 | Fase 2 | Esqueleto seguro | Pendiente | — | — |
 | Fase 3 | Ingesta y transformación | Pendiente | — | — |

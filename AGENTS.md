@@ -4,7 +4,7 @@ Este archivo complementa [`plan de implementacion.md`](plan%20de%20implementacio
 
 ## Límite actual
 
-- Implementa únicamente tareas de la fase aprobada y respeta las puertas del plan para avanzar. La Fase 3 está completada y aceptada; la Fase 4 (tabla/edición) requiere aprobación explícita antes de iniciar. No implementes sincronización real con Zoho hasta aprobar sus fases. No uses credenciales ni contactes Zoho en fases que no lo requieran. No publiques, compartas ni integres cambios sin autorización específica. El repositorio ya está configurado; no lo reinicialices.
+- Implementa únicamente tareas de la fase aprobada y respeta las puertas del plan para avanzar. La Fase 4 está aprobada para tabla y edición individual; mantén la sincronización real con Zoho fuera del alcance hasta aprobar la Fase 5. No uses credenciales ni contactes Zoho en Fase 4. No publiques, compartas ni integres cambios sin autorización específica. El repositorio ya está configurado; no lo reinicialices.
 - Antes de cada fase solicita y espera aprobación explícita. La aprobación de una fase no aprueba las fases siguientes ni acciones externas separadas.
 - Si hay decisiones abiertas que bloquean la fase, documenta el bloqueo y continúa solo con tareas independientes ya aprobadas. No inventes contratos, endpoints, reglas de negocio, secretos o decisiones de infraestructura.
 - Conserva el registro de pendientes, decisiones y aprobaciones en `plan de implementacion.md`.

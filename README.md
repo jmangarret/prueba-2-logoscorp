@@ -27,7 +27,7 @@ ZOHO_REFRESH_TOKEN
 ZOHO_ACCESS_TOKEN
 ```
 
-No pongas valores reales en este README, `.env.example`, Git ni el bundle del navegador. Cuando se apruebe la fase que configure la aplicación, los secretos se guardarán únicamente en un archivo local ignorado por Git y se leerán desde el servidor. Las URLs propuestas son `https://accounts.zoho.com` y `https://www.zohoapis.com`.
+`.env.example` contiene los nombres y las URLs públicas; los campos secretos están vacíos a propósito. No pongas valores reales en este README, `.env.example`, Git ni el bundle del navegador. Cuando se apruebe la fase que configure la aplicación, copia la plantilla a un archivo local ignorado por Git y configura ahí los valores; el servidor leerá las credenciales. Las URLs confirmadas son `https://accounts.zoho.com` y `https://www.zohoapis.com`.
 
 ## Criterios de aceptación
 
@@ -35,4 +35,4 @@ Los criterios, fases, aprobaciones, decisiones y pendientes están en [`plan de 
 
 ## Próximo paso
 
-Aprobar la salida de la Fase 1 y el alcance de la Fase 2 antes de crear la aplicación. `main` ya está inicializada localmente con la documentación. El remoto está configurado pero vacío; publicar `main` requiere autorización explícita.
+La documentación inicial y `main` ya están publicadas en el remoto. La aplicación aún no se ha creado. Se requiere aprobación del alcance de implementación antes de comenzar la Fase 2.

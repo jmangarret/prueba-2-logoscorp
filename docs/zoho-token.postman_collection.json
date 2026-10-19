@@ -1,0 +1,36 @@
+{
+  "info": {
+    "name": "Zoho OAuth - generar access token",
+    "description": "Solicitud con placeholders locales. No guardar secretos ni respuestas con access_token en una colección compartida.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Generar access token",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            { "key": "grant_type", "value": "refresh_token", "type": "text" },
+            { "key": "client_id", "value": "{{ZOHO_CLIENT_ID}}", "type": "text" },
+            { "key": "client_secret", "value": "{{ZOHO_CLIENT_SECRET}}", "type": "text" },
+            { "key": "refresh_token", "value": "{{ZOHO_REFRESH_TOKEN}}", "type": "text" }
+          ]
+        },
+        "url": {
+          "raw": "{{ZOHO_ACCOUNTS_URL}}/oauth/v2/token",
+          "host": ["{{ZOHO_ACCOUNTS_URL}}"],
+          "path": ["oauth", "v2", "token"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

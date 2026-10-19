@@ -8,6 +8,21 @@ export interface SyncContactRequest {
   website: string;
 }
 
+export type SyncContactErrorCode =
+  | "SIMULATED_FAILURE"
+  | "VALIDATION_ERROR"
+  | "ZOHO_REJECTED"
+  | "ZOHO_UNAVAILABLE"
+  | "AUTH_CONFIGURATION_ERROR"
+  | "INTERNAL_ERROR";
+
 export type SyncContactResponse =
   | { ok: true; data: { sourceUserId: number; zohoContactId: string } }
-  | { ok: false; error: { code: string; message: string } };
+  | {
+      ok: false;
+      error: {
+        sourceUserId: number | null;
+        code: SyncContactErrorCode;
+        message: string;
+      };
+    };

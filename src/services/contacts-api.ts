@@ -27,6 +27,13 @@ function isSyncContactResponse(value: unknown): value is SyncContactResponse {
   return (
     value.ok === false &&
     isRecord(value.error) &&
+    (typeof value.error.sourceUserId === "number" || value.error.sourceUserId === null) &&
+    (value.error.code === "SIMULATED_FAILURE" ||
+      value.error.code === "VALIDATION_ERROR" ||
+      value.error.code === "ZOHO_REJECTED" ||
+      value.error.code === "ZOHO_UNAVAILABLE" ||
+      value.error.code === "AUTH_CONFIGURATION_ERROR" ||
+      value.error.code === "INTERNAL_ERROR") &&
     typeof value.error.code === "string" &&
     typeof value.error.message === "string"
   );

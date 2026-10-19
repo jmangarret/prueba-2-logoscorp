@@ -1,9 +1,13 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import type { UsersApiResponse } from "../shared/contracts/users";
+import type { SyncContactResponse } from "../shared/contracts/sync-contact";
+import { syncContactUseCase } from "./application/sync-contact";
+import { JsonBodyError, readJsonBody } from "./http/read-json-body";
 import { UsersServiceError, getUsers } from "./services/jsonplaceholder-users";
 
 const host = "127.0.0.1";
 const port = 8787;
+type SyncFailureCode = Extract<SyncContactResponse, { ok: false }>["error"]["code"];
 
 function sendJson(
   response: ServerResponse<IncomingMessage>,
@@ -18,7 +22,25 @@ function sendJson(
   response.end(JSON.stringify(body));
 }
 
-const server = createServer((request, response) => {
+function syncStatusCode(code: SyncFailureCode): number {
+  switch (code) {
+    case "VALIDATION_ERROR":
+      return 400;
+    case "SIMULATED_FAILURE":
+    case "ZOHO_REJECTED":
+      return 422;
+    case "AUTH_CONFIGURATION_ERROR":
+    case "ZOHO_UNAVAILABLE":
+      return 503;
+    case "INTERNAL_ERROR":
+      return 500;
+  }
+}
+
+async function handleRequest(
+  request: IncomingMessage,
+  response: ServerResponse<IncomingMessage>,
+): Promise<void> {
   const requestUrl = new URL(request.url ?? "/", `http://${host}:${port}`);
 
   if (request.method === "GET" && requestUrl.pathname === "/api/health") {
@@ -52,13 +74,24 @@ const server = createServer((request, response) => {
     request.method === "POST" &&
     requestUrl.pathname === "/api/contacts/sync"
   ) {
-    sendJson(response, 501, {
-      ok: false,
-      error: {
-        code: "NOT_IMPLEMENTED",
-        message: "La sincronización se habilitará en la Fase 5.",
-      },
-    });
+    let payload: unknown;
+    try {
+      payload = await readJsonBody(request);
+    } catch (error: unknown) {
+      const statusCode = error instanceof JsonBodyError ? error.statusCode : 400;
+      const message = error instanceof JsonBodyError
+        ? error.message
+        : "No fue posible leer la solicitud.";
+      const result: SyncContactResponse = {
+        ok: false,
+        error: { sourceUserId: null, code: "VALIDATION_ERROR", message },
+      };
+      sendJson(response, statusCode, result);
+      return;
+    }
+
+    const result = await syncContactUseCase(payload);
+    sendJson(response, result.ok ? 201 : syncStatusCode(result.error.code), result);
     return;
   }
 
@@ -66,6 +99,19 @@ const server = createServer((request, response) => {
     ok: false,
     code: "NOT_FOUND",
     message: "Ruta local no encontrada.",
+  });
+}
+
+const server = createServer((request, response) => {
+  void handleRequest(request, response).catch(() => {
+    sendJson(response, 500, {
+      ok: false,
+      error: {
+        sourceUserId: null,
+        code: "INTERNAL_ERROR",
+        message: "Ocurrió un error al procesar la solicitud.",
+      },
+    });
   });
 });
 

@@ -170,16 +170,17 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 **Tareas**
 
-- [ ] Aplicar el mapping de campos y contrato del endpoint Zoho aprobados en Fase 1.
-- [ ] Implementar adaptador/servicio Zoho en servidor con configuración segura, respuesta validada y errores saneados.
-- [ ] Implementar el caso de uso centralizado de sincronización invocado por el flujo individual; definir una respuesta tipada por registro.
-- [ ] Aplicar la simulación requerida: si `username` comienza con `C`, devolver fallo simulado y no llamar a Zoho/no guardar ese contacto.
-- [ ] Conectar “Guardar y Enviar a CRM” y mostrar resultado real confirmado por servidor.
-- [ ] Documentar pasos manuales de obtención/configuración del token sin guardar el token ni publicar credenciales. Preparar cURL/colección de Postman solo con placeholders seguros.
+- [x] Aplicar el mapping de campos y contrato del endpoint Zoho aprobados en Fase 1.
+- [x] Implementar adaptador/servicio Zoho en servidor con configuración segura, respuesta validada, timeout y errores saneados.
+- [x] Implementar el caso de uso centralizado de sincronización invocado por el flujo individual, con validación server-side y respuesta tipada por registro.
+- [x] Aplicar la simulación requerida: si `username` comienza con `C`, devolver fallo simulado y no llamar a Zoho/no guardar ese contacto.
+- [x] Rechazar empresas no elegibles en servidor antes de llamar a Zoho; volver a validar en servidor aunque la UI ya clasifique el contacto.
+- [x] Conectar “Guardar y Enviar a CRM” y mostrar únicamente resultados confirmados por servidor.
+- [x] Documentar pasos manuales de obtención/configuración del token y preparar una colección Postman con placeholders, sin secretos ni tokens reales.
 
 **Criterio de salida:** flujo individual crea en CRM únicamente ante respuesta exitosa de Zoho; el caso simulado falla sin persistir; fallos recuperables conservan la edición. Aprobación para Fase 6.
 
-**Estado:** aprobada por el usuario el 2026-10-19 e iniciada en `fase-5-sincronizacion-individual`, creada desde `origin/main` sincronizada. Contrato/mapping aprobado en Fase 1. El usuario indica que configuró las variables, pero ninguna está disponible en el proceso de Codex y `.env.local` no existe en este checkout; no se mostrarán valores ni se crearán contactos reales durante verificaciones.
+**Estado:** implementación completada en `fase-5-sincronizacion-individual`; typecheck/build pasan. No se ejecutaron llamadas mutables a Zoho. El usuario indica que configuró las variables, pero ninguna está disponible en el proceso de Codex y `.env.local` no existe en este checkout; el flujo real requiere reiniciar el servidor con las variables disponibles. Pendiente de revisión/aceptación del usuario antes de Fase 6.
 
 ### Fase 6 — Sincronización masiva y resultados parciales
 
@@ -234,6 +235,6 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 | Fase 2 | Esqueleto seguro | Aceptada por el usuario | 2026-10-19 | Rama `fase-2-esqueleto-seguro`; usuario confirma Node 22 con nvm y funcionamiento de endpoints. Typecheck/build completados. Commit local `e4f9119`; `POST /api/contacts/sync` sigue en 501 hasta Fase 5. |
 | Fase 3 | Ingesta y transformación | Aceptada por el usuario | 2026-10-19 | Aprobación de inicio: “agrega commits para iniciar la fase 3”; aceptación: “Fase 3 aprobada y aceptada”. Rama `fase-3-ingesta-normalizacion`, basada en `origin/main` e incluye el commit local de Fase 2. Typecheck/build pasan; smoke HTTP de `/api/users` pendiente por ocupación del puerto 8787. Fase 4 aún requiere aprobación explícita. |
 | Fase 4 | Tabla y edición | Aceptada por el usuario | 2026-10-19 | Inicio aprobado: “ya hice push inicia fase 4”; aceptación: “aprobada fase 4 en el navegador”. Rama `fase-4-tabla-edicion`, creada desde `origin/main` después de sincronizar el push de Fase 3. Typecheck/build pasan; el envío individual sigue en `501` hasta Fase 5. |
-| Fase 5 | Sincronización individual | Aprobada e iniciada | 2026-10-19 | Aprobación explícita: “ya agregue las variables de entorno, puedes iniciar la fase 5”. Rama `fase-5-sincronizacion-individual`, creada desde `origin/main` sincronizada. No se hará creación real en Zoho durante pruebas/verificaciones. |
+| Fase 5 | Sincronización individual | Implementada; pendiente de aceptación | 2026-10-19 | Aprobación explícita: “ya agregue las variables de entorno, puedes iniciar la fase 5”. Rama `fase-5-sincronizacion-individual`, creada desde `origin/main` sincronizada. Typecheck/build pasan. Sin llamadas mutables a Zoho; variables declaradas por el usuario no están disponibles en el entorno del agente. |
 | Fase 6 | Sincronización masiva | Pendiente | — | — |
 | Fase 7 | Entrega | Pendiente | — | — |

@@ -188,16 +188,16 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 **Tareas**
 
-- [ ] Añadir selección solo a registros válidos y acción global “Sincronizar Seleccionados”.
-- [ ] Reutilizar el mismo servicio/caso de uso de Fase 5; no duplicar el envío en la UI ni crear un segundo camino Zoho.
-- [ ] Procesar registros con aislamiento de errores por contacto y recopilar resultados confirmados: guardados, fallidos y, cuando aplique, detalle por registro.
-- [ ] Mostrar resumen final coherente con resultados reales, por ejemplo “Proceso finalizado: 3 guardados, 1 fallido”.
+- [x] Añadir selección solo a registros válidos y acción global “Sincronizar Seleccionados”.
+- [x] Reutilizar el mismo servicio/caso de uso de Fase 5; no duplicar el envío en la UI ni crear un segundo camino Zoho.
+- [x] Procesar registros con aislamiento de errores por contacto y recopilar resultados confirmados: guardados, fallidos y, cuando aplique, detalle por registro.
+- [x] Mostrar resumen final coherente con resultados reales, por ejemplo “Proceso finalizado: 3 guardados, 1 fallido”.
 - [x] Procesar el lote secuencialmente, según decisión del usuario: el conjunto es pequeño.
-- [ ] Asegurar que inválidos no son seleccionables y que el lote sigue tras fallo real o simulado.
+- [x] Asegurar que inválidos no son seleccionables y que el lote sigue tras fallo real o simulado.
 
 **Criterio de salida:** resultados parciales no abortan el lote; contadores corresponden a respuestas del servidor; individual y masivo comparten servicio. Aprobación para Fase 7.
 
-**Estado:** aprobada para implementación por el usuario el 2026-10-19; en curso en la rama `fase-6-sincronizacion-masiva`, basada en `origin/main` (commit `7ca1a70`).
+**Estado:** implementación completada en `fase-6-sincronizacion-masiva`; `npm run typecheck` y `npm run build` pasan con Node 22.21.1. La interfaz local confirma que solo filas válidas tienen checkbox y que la selección habilita/deshabilita la acción. No se ejecutó un lote contra Zoho para evitar crear contactos reales durante la verificación; la aceptación de la fase corresponde al usuario.
 
 ### Fase 7 — Documentación, revisión y entrega
 
@@ -236,5 +236,5 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 | Fase 3 | Ingesta y transformación | Aceptada por el usuario | 2026-10-19 | Aprobación de inicio: “agrega commits para iniciar la fase 3”; aceptación: “Fase 3 aprobada y aceptada”. Rama `fase-3-ingesta-normalizacion`, basada en `origin/main` e incluye el commit local de Fase 2. Typecheck/build pasan; smoke HTTP de `/api/users` pendiente por ocupación del puerto 8787. Fase 4 aún requiere aprobación explícita. |
 | Fase 4 | Tabla y edición | Aceptada por el usuario | 2026-10-19 | Inicio aprobado: “ya hice push inicia fase 4”; aceptación: “aprobada fase 4 en el navegador”. Rama `fase-4-tabla-edicion`, creada desde `origin/main` después de sincronizar el push de Fase 3. Typecheck/build pasan; el envío individual sigue en `501` hasta Fase 5. |
 | Fase 5 | Sincronización individual | Aceptada por el usuario | 2026-10-19 | Inicio aprobado: “ya agregue las variables de entorno, puedes iniciar la fase 5”. Aceptación: usuario confirma creación correcta en Zoho desde el navegador después de actualizar contactos previamente existentes. Rama `fase-5-sincronizacion-individual`; typecheck/build pasan. Configuración sensible local, fuera de Git. |
-| Fase 6 | Sincronización masiva y resultados parciales | Inicio aprobado; en curso | 2026-10-19 | Aprobación explícita: “ya hice commit y push, inicia la fase 6”. Rama `fase-6-sincronizacion-masiva`, creada desde `origin/main` actualizado al commit `7ca1a70`. |
+| Fase 6 | Sincronización masiva y resultados parciales | Implementada; pendiente de aceptación | 2026-10-19 | Aprobación explícita: “ya hice commit y push, inicia la fase 6”. Rama `fase-6-sincronizacion-masiva`, creada desde `origin/main` actualizado al commit `7ca1a70`. Typecheck/build pasan con Node 22.21.1 y la UI se verificó sin enviar el lote a Zoho. |
 | Fase 7 | Entrega | Pendiente | — | — |

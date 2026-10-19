@@ -187,6 +187,12 @@ button:focus-visible {
   font-weight: 650;
 }
 
+.contact-table input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #71a6f3;
+}
+
 .contact-row--invalid {
   color: #8d9aac;
   background: rgb(8 13 21 / 40%);
@@ -243,6 +249,49 @@ button:focus-visible {
 .contact-form input:focus-visible {
   outline: 3px solid #8cb8f4;
   outline-offset: 2px;
+}
+
+.bulk-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.bulk-toolbar p {
+  margin: 0;
+  color: #a6b5c8;
+}
+
+.batch-progress {
+  margin: 10px 0 0;
+  color: #a6b5c8;
+}
+
+.batch-summary {
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px solid #31465f;
+  border-radius: 12px;
+  background: #101a28;
+}
+
+.batch-summary h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.batch-summary p {
+  margin: 10px 0;
+}
+
+.batch-summary ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 20px;
+  color: #cbd7e6;
 }
 
 .edit-panel {
@@ -359,5 +408,10 @@ button:focus-visible {
 
   .edit-panel__heading {
     align-items: center;
+  }
+
+  .bulk-toolbar {
+    align-items: stretch;
+    flex-direction: column;
   }
 }

@@ -71,3 +71,15 @@ export function toContactRecord(source: {
     eligibility: classifyCompany(source.companyName),
   };
 }
+
+export function toContactDraft(contact: ContactRecord): ContactDraft {
+  return {
+    sourceUserId: contact.sourceUserId,
+    username: contact.username,
+    name: contact.name,
+    email: contact.email,
+    phone: contact.normalizedPhone,
+    website: contact.normalizedWebsite,
+    companyName: contact.companyName,
+  };
+}

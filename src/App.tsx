@@ -6,6 +6,10 @@ import {
 } from "../shared/domain/contact";
 import { ContactEditForm } from "./components/ContactEditForm";
 import { ContactTable } from "./components/ContactTable";
+import {
+  syncSelectedContacts,
+  type ContactSyncBatchResult,
+} from "./services/contact-sync-batch";
 import { fetchUsers } from "./services/users-api";
 
 type ApiHealth = { status: "ok" };
@@ -14,6 +18,10 @@ type UsersState =
   | { status: "loading" }
   | { status: "loaded"; users: ContactRecord[] }
   | { status: "error"; message: string };
+type BatchState =
+  | { status: "idle" }
+  | { status: "running"; total: number; results: ContactSyncBatchResult[] }
+  | { status: "complete"; results: ContactSyncBatchResult[] };
 
 function isApiHealth(value: unknown): value is ApiHealth {
   return (
@@ -30,6 +38,10 @@ export default function App() {
   const [reloadKey, setReloadKey] = useState(0);
   const [editingContact, setEditingContact] = useState<ContactRecord | null>(null);
   const [announcement, setAnnouncement] = useState("");
+  const [selectedContactIds, setSelectedContactIds] = useState<ReadonlySet<number>>(
+    () => new Set(),
+  );
+  const [batchState, setBatchState] = useState<BatchState>({ status: "idle" });
 
   const loadUsers = useCallback(async (signal: AbortSignal) => {
     setUsersState({ status: "loading" });
@@ -85,6 +97,13 @@ export default function App() {
   const users = usersState.status === "loaded" ? usersState.users : [];
   const validCount = users.filter((user) => user.eligibility === "valid").length;
   const invalidCount = users.length - validCount;
+  const selectedContacts = users.filter(
+    (user) => user.eligibility === "valid" && selectedContactIds.has(user.sourceUserId),
+  );
+  const isBatchSyncing = batchState.status === "running";
+  const batchResults = batchState.status === "idle" ? [] : batchState.results;
+  const batchSuccessCount = batchResults.filter((result) => result.status === "success").length;
+  const batchFailureCount = batchResults.length - batchSuccessCount;
 
   function handleContactSaved(draft: ContactDraft) {
     setUsersState((current) => {
@@ -98,7 +117,47 @@ export default function App() {
         ),
       };
     });
+    setSelectedContactIds((current) => {
+      const next = new Set(current);
+      next.delete(draft.sourceUserId);
+      return next;
+    });
     setAnnouncement(`Contacto ${draft.name} guardado en Zoho CRM.`);
+  }
+
+  function handleSelectionChange(sourceUserId: number, selected: boolean) {
+    setSelectedContactIds((current) => {
+      const next = new Set(current);
+      if (selected) next.add(sourceUserId);
+      else next.delete(sourceUserId);
+      return next;
+    });
+    setBatchState({ status: "idle" });
+  }
+
+  async function handleSyncSelected() {
+    if (isBatchSyncing || selectedContacts.length === 0) return;
+
+    const contactsToSync = selectedContacts;
+    setEditingContact(null);
+    setAnnouncement("");
+    setBatchState({ status: "running", total: contactsToSync.length, results: [] });
+
+    const results = await syncSelectedContacts(contactsToSync, (result) => {
+      setBatchState((current) =>
+        current.status === "running"
+          ? { ...current, results: [...current.results, result] }
+          : current,
+      );
+    });
+
+    setSelectedContactIds(new Set());
+    setBatchState({ status: "complete", results });
+    const savedCount = results.filter((result) => result.status === "success").length;
+    const failedCount = results.length - savedCount;
+    setAnnouncement(
+      `Proceso finalizado: ${savedCount} guardados, ${failedCount} fallidos.`,
+    );
   }
 
   return (
@@ -143,11 +202,58 @@ export default function App() {
               </dl>
               <ContactTable
                 contacts={users}
+                selectedContactIds={selectedContactIds}
+                onSelectionChange={handleSelectionChange}
+                isDisabled={isBatchSyncing}
                 onEdit={(contact) => {
                   setAnnouncement("");
                   setEditingContact(contact);
                 }}
               />
+              <div className="bulk-toolbar">
+                <p aria-live="polite">
+                  {selectedContacts.length === 1
+                    ? "1 contacto válido seleccionado"
+                    : `${selectedContacts.length} contactos válidos seleccionados`}
+                </p>
+                <button
+                  className="button button--primary"
+                  type="button"
+                  disabled={selectedContacts.length === 0 || isBatchSyncing}
+                  onClick={() => void handleSyncSelected()}
+                >
+                  Sincronizar Seleccionados
+                </button>
+              </div>
+              {isBatchSyncing && (
+                <p className="batch-progress" role="status" aria-live="polite">
+                  Proceso en curso: {batchState.results.length} de {batchState.total} contactos
+                  completados.
+                </p>
+              )}
+              {batchState.status === "complete" && (
+                <section
+                  className="batch-summary"
+                  aria-labelledby="batch-summary-title"
+                  role="status"
+                  aria-live="polite"
+                >
+                  <h3 id="batch-summary-title">Resultado de sincronización</h3>
+                  <p>
+                    Proceso finalizado: {batchSuccessCount} guardados, {batchFailureCount} fallidos.
+                  </p>
+                  <ul>
+                    {batchResults.map((result) => (
+                      <li key={result.sourceUserId}>
+                        <strong>{result.name}:</strong>{" "}
+                        {result.status === "success"
+                          ? `creado en Zoho (ID ${result.zohoContactId})`
+                          : `${result.message} (${result.code})`}
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
             </>
           )}
           {announcement && (

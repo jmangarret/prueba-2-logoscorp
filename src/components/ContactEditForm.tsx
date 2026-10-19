@@ -1,7 +1,11 @@
 import { useState, type FormEvent } from "react";
 import type { SyncContactResponse } from "../../shared/contracts/sync-contact";
-import type { ContactDraft, ContactRecord } from "../../shared/domain/contact";
-import { normalizeWebsite } from "../../shared/domain/contact";
+import {
+  normalizeWebsite,
+  toContactDraft,
+  type ContactDraft,
+  type ContactRecord,
+} from "../../shared/domain/contact";
 import { syncContact } from "../services/contacts-api";
 
 interface ContactEditFormProps {
@@ -10,20 +14,8 @@ interface ContactEditFormProps {
   onSuccess: (draft: ContactDraft) => void;
 }
 
-function createDraft(contact: ContactRecord): ContactDraft {
-  return {
-    sourceUserId: contact.sourceUserId,
-    username: contact.username,
-    name: contact.name,
-    email: contact.email,
-    phone: contact.normalizedPhone,
-    website: contact.normalizedWebsite,
-    companyName: contact.companyName,
-  };
-}
-
 export function ContactEditForm({ contact, onClose, onSuccess }: ContactEditFormProps) {
-  const [draft, setDraft] = useState(() => createDraft(contact));
+  const [draft, setDraft] = useState(() => toContactDraft(contact));
   const [result, setResult] = useState<SyncContactResponse | null>(null);
   const [validationMessage, setValidationMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);

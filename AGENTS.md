@@ -4,7 +4,7 @@ Este archivo complementa [`plan de implementacion.md`](plan%20de%20implementacio
 
 ## Límite actual
 
-- Implementa únicamente tareas de la fase aprobada y respeta las puertas del plan para avanzar. La Fase 2 está aprobada para crear el esqueleto local y su configuración; no implementes ingesta de usuarios ni sincronización real con Zoho hasta que sus fases sean aprobadas. No uses credenciales ni contactes Zoho durante el esqueleto. No publiques, compartas ni integres cambios sin autorización específica. El repositorio ya está configurado; no lo reinicialices.
+- Implementa únicamente tareas de la fase aprobada y respeta las puertas del plan para avanzar. La Fase 3 está aprobada para ingesta, validación, normalización, clasificación y estados de UI; no implementes tabla/edición ni sincronización real con Zoho hasta que sus fases sean aprobadas. No uses credenciales ni contactes Zoho durante Fase 3. No publiques, compartas ni integres cambios sin autorización específica. El repositorio ya está configurado; no lo reinicialices.
 - Antes de cada fase solicita y espera aprobación explícita. La aprobación de una fase no aprueba las fases siguientes ni acciones externas separadas.
 - Si hay decisiones abiertas que bloquean la fase, documenta el bloqueo y continúa solo con tareas independientes ya aprobadas. No inventes contratos, endpoints, reglas de negocio, secretos o decisiones de infraestructura.
 - Conserva el registro de pendientes, decisiones y aprobaciones en `plan de implementacion.md`.

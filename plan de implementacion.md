@@ -130,7 +130,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 **Criterio de salida:** estructura compilable, secretos solo del lado servidor, configuración reproducible y flujo CORS arquitectónico explicado. Aprobación para Fase 3.
 
-**Estado:** completada y aceptada por el usuario en la rama `fase-2-esqueleto-seguro`; typecheck/build y funcionamiento de endpoints confirmados. Inicio de Fase 3 pendiente de aprobación explícita.
+**Estado:** completada y aceptada por el usuario en la rama `fase-2-esqueleto-seguro`; typecheck/build y funcionamiento de endpoints confirmados. Commit local `e4f9119` (`feat: scaffold local app and API server`).
 
 ### Fase 3 — Ingesta, normalización y clasificación
 
@@ -146,7 +146,7 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 **Criterio de salida:** datos transformados de forma consistente antes de llegar a presentación; registros inválidos identificables y sin selección. Aprobación para Fase 4.
 
-**Estado:** pendiente de Fase 2.
+**Estado:** aprobada por el usuario el 2026-10-19 e iniciada en `fase-3-ingesta-normalizacion`, rama local creada desde `origin/main` e incluyendo el commit de Fase 2. No hacer push ni PR sin autorización específica.
 
 ### Fase 4 — Tabla y edición individual
 
@@ -230,8 +230,8 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 |---|---|---|---|---|
 | Fase 0 | Preparación y aclaraciones | Completada | 2026-10-19 | Usuario confirmó repositorio configurado, convención de ramas, credenciales disponibles, datacenter/URLs, React/Vite/TypeScript estricto, uso local y aprobación por un desarrollador. `main` fue publicada con documentación y la plantilla de entorno sin secretos. |
 | Fase 1 | Diseño técnico | Completada | 2026-10-19 | Diseño, DTO, mapping, seguridad, variables de entorno de ejemplo y estados documentados y publicados. No se generó código de producto. La Fase 2 requiere aprobación explícita. |
-| Fase 2 | Esqueleto seguro | Aceptada por el usuario | 2026-10-19 | Rama `fase-2-esqueleto-seguro`; usuario confirma Node 22 con nvm y funcionamiento de endpoints. Typecheck/build completados. `POST /api/contacts/sync` sigue en 501 hasta Fase 5. Inicio de Fase 3 pendiente de aprobación explícita. |
-| Fase 3 | Ingesta y transformación | Pendiente | — | — |
+| Fase 2 | Esqueleto seguro | Aceptada por el usuario | 2026-10-19 | Rama `fase-2-esqueleto-seguro`; usuario confirma Node 22 con nvm y funcionamiento de endpoints. Typecheck/build completados. Commit local `e4f9119`; `POST /api/contacts/sync` sigue en 501 hasta Fase 5. |
+| Fase 3 | Ingesta y transformación | Aprobada e iniciada | 2026-10-19 | Aprobación explícita: “agrega commits para iniciar la fase 3”. Rama `fase-3-ingesta-normalizacion`, basada en `origin/main` e incluye el commit local de Fase 2. |
 | Fase 4 | Tabla y edición | Pendiente | — | — |
 | Fase 5 | Sincronización individual | Pendiente | — | — |
 | Fase 6 | Sincronización masiva | Pendiente | — | — |

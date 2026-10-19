@@ -228,8 +228,8 @@ Zoho API: `POST {ZOHO_API_BASE_URL}/crm/v8/Contacts`, body `{ "data": [{ ...camp
 
 | Fase | Alcance presentado | Aprobación | Fecha | Notas |
 |---|---|---|---|---|
-| Fase 0 | Preparación y aclaraciones | Completada | 2026-10-19 | Usuario confirmó repositorio configurado, convención de ramas, credenciales disponibles, datacenter/URLs, React/Vite/TypeScript estricto, uso local y aprobación por un desarrollador. Acceso al remoto comprobado; `main` local iniciada con documentación. Variables definidas sin valores. |
-| Fase 1 | Diseño técnico | En curso | 2026-10-19 | Diseño, DTO, mapping, seguridad y estados documentados. Usuario pide continuar Fase 1 añadiendo `.env.example` y publicar cambios; no iniciar implementación de Fase 2 hasta aprobación explícita. |
+| Fase 0 | Preparación y aclaraciones | Completada | 2026-10-19 | Usuario confirmó repositorio configurado, convención de ramas, credenciales disponibles, datacenter/URLs, React/Vite/TypeScript estricto, uso local y aprobación por un desarrollador. `main` fue publicada con documentación y la plantilla de entorno sin secretos. |
+| Fase 1 | Diseño técnico | Completada | 2026-10-19 | Diseño, DTO, mapping, seguridad, variables de entorno de ejemplo y estados documentados y publicados. No se generó código de producto. La Fase 2 requiere aprobación explícita. |
 | Fase 2 | Esqueleto seguro | Pendiente | — | — |
 | Fase 3 | Ingesta y transformación | Pendiente | — | — |
 | Fase 4 | Tabla y edición | Pendiente | — | — |
